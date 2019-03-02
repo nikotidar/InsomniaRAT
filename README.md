@@ -1,4 +1,4 @@
-Insomnia RAT developed by Hari Patel (hari.p.221221@gmail.com)
+Insomnia RAT developed by Hari Patel (hari.p.221221@gmail.com) (github.com/Hari-P-22121)
 
 Insomnia RAT is a P2P Remote Administrator Tool for OSX. The client and host both require OSX operating system. 
 
